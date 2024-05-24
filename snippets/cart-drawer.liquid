@@ -336,6 +336,8 @@
                             </svg>
                           </div>
                         </td>
+
+                        {% render 'upgrade-cart-item', item: item %}
                       </tr>
                     {%- endfor -%}
                   </tbody>
@@ -454,3 +456,5 @@
     });
   });
 </script>
+
+<script src="{{ 'custom-cart-drawer.js' | asset_url }}" defer></script>

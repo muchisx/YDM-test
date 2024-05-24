@@ -1,0 +1,37 @@
+.cart-drawer .drawer__contents .cart-item__upgrade {
+  grid-column: 1 / -1;
+  padding-block: 1.4rem 1.6rem;
+  margin-left: 4rem;
+  border-block: 1px solid rgb(228, 228, 228);
+}
+
+.cart-item__upgrade-heading {
+  display: block;
+  line-height: 1.1;
+  margin-bottom: 1.6rem;
+}
+
+.upgrade-product__content {
+  display: flex;
+  gap: 1rem;
+}
+
+.upgrade-product__img {
+  width: 64px;
+  flex-shrink: 0;
+}
+
+.upgrade-product__img img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.upgrade-product__title {
+  margin-block: 0 1.6rem;
+}
+
+.upgrade-product__add-to-cart {
+  display: inline-block;
+  border: 1px solid rgb(18, 18, 18);
+}

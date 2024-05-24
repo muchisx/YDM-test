@@ -1,0 +1,70 @@
+{% comment %}
+  Renders an upgrade item for a cart line-item.
+  This snippet is used to render an upgrade item in the cart drawer.
+  The upgrade item is a product that is associated with the original product and is intended to be an upgrade to the original product.
+  The upgrade item is defined in the original product's metafields.
+  The upgrade item is rendered with the following information:
+
+  Accepts:
+  - item: {Object} Cart Line-Item object
+
+  Usage:
+  {% render 'upgrade-cart-item', item: yourCartLineItem %}
+{% endcomment %}
+
+{% assign upgrade_product = item.product.metafields.custom.upgrade_product.value %}
+
+{% if upgrade_product != blank %}
+  {% liquid
+    assign current_upgrade_product_quantity = 0
+    for cart_item in cart.items
+      if cart_item.product.id == upgrade_product.id
+        assign current_upgrade_product_quantity = cart_item.quantity
+      endif
+    endfor
+  %}
+
+  <td class="cart-item__upgrade" role="cell">
+    <span class="cart-item__upgrade-heading">Upgrade your item</span>
+
+    <div class="upgrade-product__content">
+      <div class="upgrade-product__img">
+        {{
+          upgrade_product.featured_image
+          | image_url: width: 720
+          | image_tag: loading: 'lazy', alt: upgrade_product.title
+        }}
+      </div>
+
+      <div class="upgrade-product__info">
+        <a href="{{ upgrade_product.url }}" class="upgrade-product__title cart-item__name h4 break">
+          {{- upgrade_product.title -}}
+        </a>
+
+        <upgrade-add-to-cart
+          class="upgrade-product__add-to-cart"
+          data-current-variant-id="{{ item.variant.id }}"
+          data-current-variant-quantity="{{ item.quantity }}"
+          data-upgrade-variant-id="{{ upgrade_product.first_available_variant.id }}"
+          data-upgrade-variant-quantity="{{ current_upgrade_product_quantity }}"
+        >
+          <button
+            class="button button--tertiary"
+            type="button"
+          >
+            UPGRADE
+          </button>
+        </upgrade-add-to-cart>
+      </div>
+
+      <div class="upgrade-product__pricing">
+        <span class="upgrade-product__price">{{ upgrade_product.first_available_variant.price | money }}</span>
+        {% if upgrade_product.first_available_variant.compare_at_price != blank %}
+          <span class="upgrade-product__compare-at">
+            {{ upgrade_product.first_available_variant.compare_at_price }}
+          </span>
+        {% endif %}
+      </div>
+    </div>
+  </td>
+{% endif %}
